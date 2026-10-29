@@ -25,6 +25,7 @@ import { ContactPage } from './pages/ContactPage.js';
 import { FAQPage } from './pages/FAQPage.js';
 
 import { Product, Order } from './types/index.js';
+import { initialProducts } from './server/catalog.js';
 
 function MainApp() {
   const [currentPage, setCurrentPage] = useState<string>('home');
@@ -37,7 +38,7 @@ function MainApp() {
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
 
   // Products state
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>(initialProducts);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
 
   // Global search query
@@ -49,10 +50,12 @@ function MainApp() {
       const res = await fetch('/api/products');
       if (res.ok) {
         const data = await res.json();
-        setProducts(data.products || []);
+        if (Array.isArray(data.products) && data.products.length > 0) {
+          setProducts(data.products);
+        }
       }
     } catch (err) {
-      console.error('Failed to load products', err);
+      console.warn('Product API unavailable; using the bundled product catalog.', err);
     } finally {
       setIsLoadingProducts(false);
     }
@@ -124,6 +127,7 @@ function MainApp() {
         {currentPage === 'product-detail' && (
           <ProductDetailPage
             slugOrId={selectedProductSlug}
+            products={products}
             onSelectProduct={handleSelectProduct}
             onNavigateCheckout={() => navigateTo('checkout')}
             onOpenSizeGuide={() => setIsSizeGuideOpen(true)}

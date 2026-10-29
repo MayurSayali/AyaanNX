@@ -11,6 +11,7 @@ import { formatPrice } from '../utils/currency.js';
 
 interface ProductDetailPageProps {
   slugOrId: string;
+  products: Product[];
   onSelectProduct: (slugOrId: string) => void;
   onNavigateCheckout: () => void;
   onOpenSizeGuide: () => void;
@@ -19,6 +20,7 @@ interface ProductDetailPageProps {
 
 export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   slugOrId,
+  products,
   onSelectProduct,
   onNavigateCheckout,
   onOpenSizeGuide,
@@ -39,24 +41,42 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
 
   const fetchProduct = async () => {
     setLoading(true);
+    let loadedFromApi = false;
+    const fallbackProduct = products.find(
+      (item) => item.id === slugOrId || item.slug === slugOrId
+    );
     try {
       const res = await fetch(`/api/products/${slugOrId}`);
       if (res.ok) {
         const data = await res.json();
-        setProduct(data.product);
-        setRelatedProducts(data.related || []);
-        if (data.product.sizes?.length) {
-          setSelectedSize(data.product.sizes[0]);
+        if (data.product) {
+          setProduct(data.product);
+          setRelatedProducts(data.related || []);
+          if (data.product.sizes?.length) {
+            setSelectedSize(data.product.sizes[0]);
+          }
+          if (data.product.colors?.length) {
+            setSelectedColor(data.product.colors[0].name);
+          }
+          loadedFromApi = true;
         }
-        if (data.product.colors?.length) {
-          setSelectedColor(data.product.colors[0].name);
-        }
-      } else {
-        setProduct(null);
       }
     } catch (err) {
-      console.error('Fetch product detail error', err);
+      console.warn('Product API unavailable; using the bundled product catalog.', err);
     } finally {
+      if (!loadedFromApi && fallbackProduct) {
+        setProduct(fallbackProduct);
+        setRelatedProducts(
+          products.filter(
+            (item) =>
+              item.category === fallbackProduct.category && item.id !== fallbackProduct.id
+          ).slice(0, 4)
+        );
+        setSelectedSize(fallbackProduct.sizes[0] || 'M');
+        setSelectedColor(fallbackProduct.colors[0]?.name || '');
+      } else if (!loadedFromApi) {
+        setProduct(null);
+      }
       setLoading(false);
     }
   };
@@ -65,7 +85,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
     fetchProduct();
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setActiveImageIndex(0);
-  }, [slugOrId]);
+  }, [slugOrId, products]);
 
   if (loading) {
     return (
