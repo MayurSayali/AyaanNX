@@ -1,0 +1,6 @@
+{
+  "name": "Ayaan NX - Modern Streetwear & Luxury Apparel",
+  "description": "High-end dynamic streetwear and fashion e-commerce store with product filtering, cart, Razorpay/Stripe checkout, user account, reviews, and admin dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
