@@ -120,7 +120,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             className="group relative h-96 overflow-hidden bg-neutral-900 cursor-pointer border border-neutral-800"
           >
             <ProductImage
-              src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=800&q=80"
+              src="/images/categories/baggy-jeans.jpg"
               alt="Baggy Jeans & Denim"
               aspectRatio="3:4"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out brightness-75 group-hover:brightness-90"
@@ -148,7 +148,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             className="group relative h-96 overflow-hidden bg-neutral-900 cursor-pointer border border-neutral-800"
           >
             <ProductImage
-              src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80"
+              src="/images/categories/linen-shirts.jpg"
               alt="Pure Linen Clothes & Shirts"
               aspectRatio="3:4"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out brightness-75 group-hover:brightness-90"
@@ -176,7 +176,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             className="group relative h-96 overflow-hidden bg-neutral-900 cursor-pointer border border-neutral-800"
           >
             <ProductImage
-              src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=800&q=80"
+              src="/images/categories/ladies-wear.jpg"
               alt="Ladies Wear & Festive Traditional"
               aspectRatio="3:4"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out brightness-75 group-hover:brightness-90"
